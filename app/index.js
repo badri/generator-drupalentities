@@ -78,10 +78,10 @@ DrupalEntityGenerator.prototype.askFor = function askFor() {
     default: 'Y/n'
   }];
 
-  this.prompt(prompts, function (err, props) {
-    if (err) {
-      return this.emit('error', err);
-    }
+  this.prompt(prompts, function (props) {
+    // if (err) {
+    //   return this.emit('error', err);
+    // }
 
     this.moduleDesc = props.moduleDesc;
     this.modulePackage = props.modulePackage;
