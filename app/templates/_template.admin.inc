@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Model editing UI.
+ * <%= className %> editing UI.
  *
  * We make very little use of the EntityAPI interface for this - preferring instead to use
  * views. That offers more flexibility to change a UI that will, more often than not,
@@ -12,7 +12,7 @@
 /**
  * UI controller.
  */
-class ModelUIController extends EntityDefaultUIController {
+class <%= className %>UIController extends EntityDefaultUIController {
 
   /**
    * Overrides hook_menu() defaults. Main reason for doing this is that
@@ -25,7 +25,7 @@ class ModelUIController extends EntityDefaultUIController {
     $wildcard = isset($this->entityInfo['admin ui']['menu wildcard']) ? $this->entityInfo['admin ui']['menu wildcard'] : '%' . $this->entityType;
 
     $items[$this->path] = array(
-      'title' => 'Models',
+      'title' => '<%= className %>s',
       'description' => 'Add edit and update <%= moduleName %>s.',
       'page callback' => 'system_admin_menu_block_page',
       'access arguments' => array('access administration pages'),
@@ -74,14 +74,14 @@ class ModelUIController extends EntityDefaultUIController {
       'file' => '<%= moduleName %>.admin.inc',
       'file path' => drupal_get_path('module', $this->entityInfo['module'])
     );
-    $items[$this->path . '/<%= moduleName %>/' . $wildcard . '/edit'] = array(
+    $items[$this->path . '/<%= url %>/' . $wildcard . '/edit'] = array(
       'title' => 'Edit',
       'type' => MENU_DEFAULT_LOCAL_TASK,
       'weight' => -10,
       'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
     );
 
-    $items[$this->path . '/<%= moduleName %>/' . $wildcard . '/delete'] = array(
+    $items[$this->path . '/<%= url %>/' . $wildcard . '/delete'] = array(
       'title' => 'Delete',
       'page callback' => '<%= moduleName %>_delete_form_wrapper',
       'page arguments' => array($id_count + 1),
@@ -110,7 +110,7 @@ class ModelUIController extends EntityDefaultUIController {
 
 
   /**
-   * Create the markup for the add Model Entities page within the class
+   * Create the markup for the add <%= className %> Entities page within the class
    * so it can easily be extended/overriden.
    */
   public function addPage() {
@@ -169,7 +169,7 @@ function <%= moduleName %>_edit_form($form, &$form_state, $<%= moduleName %>) {
   // Add the default field elements.
   $form['name'] = array(
     '#type' => 'textfield',
-    '#title' => t('Model Name'),
+    '#title' => t('<%= className %> Name'),
     '#default_value' => isset($<%= moduleName %>->name) ? $<%= moduleName %>->name : '',
     '#maxlength' => 255,
     '#required' => TRUE,
@@ -308,7 +308,7 @@ function <%= moduleName %>_delete_form_submit($form, &$form_state) {
 
 
 /**
- * Page to add Model Entities.
+ * Page to add <%= className %> Entities.
  *
  * @todo Pass this through a proper theme function
  */
@@ -336,7 +336,7 @@ function theme_<%= moduleName %>_add_list($variables) {
   }
   else {
     if (user_access('administer <%= moduleName %> types')) {
-      $output = '<p>' . t('Model Entities cannot be added because you have not created any <%= moduleName %> types yet. Go to the <a href="@create-<%= moduleName %>-type"><%= moduleName %> type creation page</a> to add a new <%= moduleName %> type.', array('@create-<%= moduleName %>-type' => url('admin/structure/<%= moduleName %>_types/add'))) . '</p>';
+      $output = '<p>' . t('<%= className %> Entities cannot be added because you have not created any <%= moduleName %> types yet. Go to the <a href="@create-<%= moduleName %>-type"><%= moduleName %> type creation page</a> to add a new <%= moduleName %> type.', array('@create-<%= moduleName %>-type' => url('admin/structure/<%= moduleName %>_types/add'))) . '</p>';
     }
     else {
       $output = '<p>' . t('No <%= moduleName %> types have been created yet for you to use.') . '</p>';
@@ -358,7 +358,7 @@ function <%= moduleName %>_set_breadcrumb() {
     l(t('Home'), '<front>'),
     l(t('Administration'), 'admin'),
     l(t('Content'), 'admin/content'),
-    l(t('Models'), 'admin/content/<%= moduleName %>s'),
+    l(t('<%= className %>s'), 'admin/content/<%= moduleName %>s'),
   );
 
   drupal_set_breadcrumb($breadcrumb);

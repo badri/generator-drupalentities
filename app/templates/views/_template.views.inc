@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Providing extra functionality for the Model UI via views.
+ * Providing extra functionality for the <%= className %> UI via views.
  */
 
 
@@ -61,7 +61,7 @@ function <%= moduleName %>_views_default_views() {
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Models';
+  $handler->display->display_options['title'] = '<%= className %>s';
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['access']['perm'] = 'create any <%= moduleName %> type';
   $handler->display->display_options['cache']['type'] = 'none';
@@ -99,7 +99,7 @@ function <%= moduleName %>_views_default_views() {
   $handler->display->display_options['empty']['area']['label'] = 'Empty ';
   $handler->display->display_options['empty']['area']['empty'] = FALSE;
   $handler->display->display_options['empty']['area']['content'] = 'No <%= moduleName %>s have been created yet';
-  /* Field: Model: Model ID */
+  /* Field: <%= className %>: <%= className %> ID */
   $handler->display->display_options['fields']['<%= moduleName %>_id']['id'] = '<%= moduleName %>_id';
   $handler->display->display_options['fields']['<%= moduleName %>_id']['table'] = '<%= moduleName %>';
   $handler->display->display_options['fields']['<%= moduleName %>_id']['field'] = '<%= moduleName %>_id';
@@ -118,7 +118,7 @@ function <%= moduleName %>_views_default_views() {
   $handler->display->display_options['fields']['<%= moduleName %>_id']['element_default_classes'] = 1;
   $handler->display->display_options['fields']['<%= moduleName %>_id']['hide_empty'] = 0;
   $handler->display->display_options['fields']['<%= moduleName %>_id']['empty_zero'] = 0;
-  /* Field: Model: Name */
+  /* Field: <%= className %>: Name */
   $handler->display->display_options['fields']['name']['id'] = 'name';
   $handler->display->display_options['fields']['name']['table'] = '<%= moduleName %>';
   $handler->display->display_options['fields']['name']['field'] = 'name';
@@ -137,7 +137,7 @@ function <%= moduleName %>_views_default_views() {
   $handler->display->display_options['fields']['name']['element_default_classes'] = 1;
   $handler->display->display_options['fields']['name']['hide_empty'] = 0;
   $handler->display->display_options['fields']['name']['empty_zero'] = 0;
-  /* Field: Model: Link */
+  /* Field: <%= className %>: Link */
   $handler->display->display_options['fields']['link_<%= moduleName %>']['id'] = 'link_<%= moduleName %>';
   $handler->display->display_options['fields']['link_<%= moduleName %>']['table'] = '<%= moduleName %>';
   $handler->display->display_options['fields']['link_<%= moduleName %>']['field'] = 'link_<%= moduleName %>';
@@ -157,7 +157,7 @@ function <%= moduleName %>_views_default_views() {
   $handler->display->display_options['fields']['link_<%= moduleName %>']['element_default_classes'] = 1;
   $handler->display->display_options['fields']['link_<%= moduleName %>']['hide_empty'] = 0;
   $handler->display->display_options['fields']['link_<%= moduleName %>']['empty_zero'] = 0;
-  /* Field: Model: Operations links */
+  /* Field: <%= className %>: Operations links */
   $handler->display->display_options['fields']['operations']['id'] = 'operations';
   $handler->display->display_options['fields']['operations']['table'] = '<%= moduleName %>';
   $handler->display->display_options['fields']['operations']['field'] = 'operations';
@@ -179,18 +179,18 @@ function <%= moduleName %>_views_default_views() {
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', '<%= moduleName %>s_admin_page');
-  $handler->display->display_options['path'] = 'admin/content/<%= moduleName %>s/list';
+  $handler->display->display_options['path'] = 'admin/content/<%= url %>s/list';
   $handler->display->display_options['menu']['type'] = 'default tab';
   $handler->display->display_options['menu']['title'] = 'List';
   $handler->display->display_options['menu']['weight'] = '-10';
   $handler->display->display_options['tab_options']['type'] = 'tab';
-  $handler->display->display_options['tab_options']['title'] = 'Models';
+  $handler->display->display_options['tab_options']['title'] = '<%= className %>s';
   $handler->display->display_options['tab_options']['description'] = 'Manage <%= moduleName %>s';
   $handler->display->display_options['tab_options']['weight'] = '0';
   $handler->display->display_options['tab_options']['name'] = 'management';
   $translatables['<%= moduleName %>s'] = array(
     t('Master'),
-    t('Models'),
+    t('<%= className %>s'),
     t('more'),
     t('Apply'),
     t('Reset'),
@@ -202,7 +202,7 @@ function <%= moduleName %>_views_default_views() {
     t('Offset'),
     t('Empty '),
     t('No <%= moduleName %>s have been created yet'),
-    t('Model ID'),
+    t('<%= className %> ID'),
     t('.'),
     t(','),
     t('Name'),

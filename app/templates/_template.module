@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Module for the Model Entity - a starting point to create your own Entity
+ * Module for the <%= className %> Entity - a starting point to create your own Entity
  * and associated administration interface
  */
 
@@ -17,11 +17,11 @@
  */
 function <%= moduleName %>_entity_info() {
   $return['<%= moduleName %>'] = array(
-    'label' => t('Model'),
+    'label' => t('<%= entityLabel %>'),
     // The entity class and controller class extend the classes provided by the
     // Entity API
-    'entity class' => 'Model',
-    'controller class' => 'ModelController',
+    'entity class' => '<%= className %>',
+    'controller class' => '<%= className %>Controller',
     'base table' => '<%= moduleName %>',
     'fieldable' => TRUE,
     'entity keys' => array(
@@ -39,19 +39,19 @@ function <%= moduleName %>_entity_info() {
     'creation callback' => '<%= moduleName %>_create',
     'access callback' => '<%= moduleName %>_access',
     'module' => '<%= moduleName %>',
-    // The information below is used by the ModelUIController (which extends the EntityDefaultUIController)
+    // The information below is used by the <%= className %>UIController (which extends the EntityDefaultUIController)
     'admin ui' => array(
-      'path' => 'admin/content/<%= moduleName %>s',
+      'path' => 'admin/content/<%= url %>s',
       'file' => '<%= moduleName %>.admin.inc',
-      'controller class' => 'ModelUIController',
+      'controller class' => '<%= className %>UIController',
       'menu wildcard' => '%<%= moduleName %>',
     ),
   );
   // The entity that holds information about the entity types
   $return['<%= moduleName %>_type'] = array(
-    'label' => t('Model Type'),
-    'entity class' => 'ModelType',
-    'controller class' => 'ModelTypeController',
+    'label' => t('<%= entityLabel %> Type'),
+    'entity class' => '<%= className %>Type',
+    'controller class' => '<%= className %>TypeController',
     'base table' => '<%= moduleName %>_type',
     'fieldable' => FALSE,
     'bundle of' => '<%= moduleName %>',
@@ -65,9 +65,9 @@ function <%= moduleName %>_entity_info() {
     'module' => '<%= moduleName %>',
     // Enable the entity API's admin UI.
     'admin ui' => array(
-      'path' => 'admin/structure/<%= moduleName %>_types',
+      'path' => 'admin/structure/<%= url %>_types',
       'file' => '<%= moduleName %>_type.admin.inc',
-      'controller class' => 'ModelTypeUIController',
+      'controller class' => '<%= className %>TypeUIController',
     ),
   );
 
@@ -88,8 +88,8 @@ function <%= moduleName %>_entity_info_alter(&$entity_info) {
     $entity_info['<%= moduleName %>']['bundles'][$type] = array(
       'label' => $info->label,
       'admin' => array(
-        'path' => 'admin/structure/<%= moduleName %>_types/manage/%<%= moduleName %>_type',
-        'real path' => 'admin/structure/<%= moduleName %>_types/manage/' . $type,
+        'path' => 'admin/structure/<%= url %>_types/manage/%<%= url %>_type',
+        'real path' => 'admin/structure/<%= url %>_types/manage/' . $type,
         'bundle argument' => 4,
         'access arguments' => array('administer <%= moduleName %> types'),
       ),
@@ -172,7 +172,7 @@ function <%= moduleName %>_type_access($op, $type = NULL, $account = NULL) {
  *
  * @param $type_name
  *   If set, the type with the given name is returned.
- * @return ModelType[]
+ * @return <%= className %>Type[]
  *   Depending whether $type isset, an array of <%= moduleName %> types or a single one.
  */
 function <%= moduleName %>_get_types($type_name = NULL) {
@@ -238,7 +238,7 @@ function <%= moduleName %>_load_multiple($<%= moduleName %>_ids = array(), $cond
 /**
  * Deletes a <%= moduleName %>.
  */
-function <%= moduleName %>_delete(Model $<%= moduleName %>) {
+function <%= moduleName %>_delete(<%= className %> $<%= moduleName %>) {
   $<%= moduleName %>->delete();
 }
 
@@ -268,7 +268,7 @@ function <%= moduleName %>_create($values = array()) {
  * @param $<%= moduleName %>
  *   The <%= moduleName %> object.
  */
-function <%= moduleName %>_save(Model $<%= moduleName %>) {
+function <%= moduleName %>_save(<%= className %> $<%= moduleName %>) {
   return $<%= moduleName %>->save();
 }
 
@@ -276,7 +276,7 @@ function <%= moduleName %>_save(Model $<%= moduleName %>) {
 /**
  * Saves a <%= moduleName %> type to the db.
  */
-function <%= moduleName %>_type_save(ModelType $type) {
+function <%= moduleName %>_type_save(<%= className %>Type $type) {
   $type->save();
 }
 
@@ -284,7 +284,7 @@ function <%= moduleName %>_type_save(ModelType $type) {
 /**
  * Deletes a <%= moduleName %> type from the db.
  */
-function <%= moduleName %>_type_delete(ModelType $type) {
+function <%= moduleName %>_type_delete(<%= className %>Type $type) {
   $type->delete();
 }
 
@@ -292,9 +292,9 @@ function <%= moduleName %>_type_delete(ModelType $type) {
 /**
  * URI callback for <%= moduleName %>s
  */
-function <%= moduleName %>_uri(Model $<%= moduleName %>){
+function <%= moduleName %>_uri(<%= className %> $<%= moduleName %>){
   return array(
-    'path' => '<%= moduleName %>/' . $<%= moduleName %>-><%= moduleName %>_id,
+    'path' => '<%= url %>/' . $<%= moduleName %>-><%= moduleName %>_id,
   );
 }
 
@@ -302,7 +302,7 @@ function <%= moduleName %>_uri(Model $<%= moduleName %>){
 /**
  * Menu title callback for showing individual entities
  */
-function <%= moduleName %>_page_title(Model $<%= moduleName %>){
+function <%= moduleName %>_page_title(<%= className %> $<%= moduleName %>){
   return $<%= moduleName %>->name;
 }
 
@@ -358,7 +358,7 @@ function <%= moduleName %>_theme() {
  */
 function <%= moduleName %>_menu_local_tasks_alter(&$data, $router_item, $root_path) {
   // Add action link 'admin/structure/<%= moduleName %>s/add' on 'admin/structure/<%= moduleName %>s'.
-  if ($root_path == 'admin/content/<%= moduleName %>s') {
+  if ($root_path == 'admin/content/<%= url %>s') {
     $item = menu_get_item('admin/content/<%= moduleName %>s/add');
     if ($item['access']) {
       $data['actions']['output'][] = array(
@@ -373,7 +373,7 @@ function <%= moduleName %>_menu_local_tasks_alter(&$data, $router_item, $root_pa
 /**
  * The class used for <%= moduleName %> entities
  */
-class Model extends Entity {
+class <%= className %> extends Entity {
 
   public function __construct($values = array()) {
     parent::__construct($values, '<%= moduleName %>');
@@ -384,7 +384,7 @@ class Model extends Entity {
   }
 
   protected function defaultUri() {
-    return array('path' => '<%= moduleName %>/' . $this-><%= moduleName %>_id);
+    return array('path' => '<%= url %>/' . $this-><%= moduleName %>_id);
   }
 
 
@@ -394,7 +394,7 @@ class Model extends Entity {
 /**
  * The class used for <%= moduleName %> type entities
  */
-class ModelType extends Entity {
+class <%= className %>Type extends Entity {
 
   public $type;
   public $label;
@@ -407,9 +407,9 @@ class ModelType extends Entity {
 
 
 /**
- * The Controller for Model entities
+ * The Controller for <%= className %> entities
  */
-class ModelController extends EntityAPIController {
+class <%= className %>Controller extends EntityAPIController {
   public function __construct($entityType) {
     parent::__construct($entityType);
   }
@@ -427,7 +427,7 @@ class ModelController extends EntityAPIController {
    *   A <%= moduleName %> object with all default fields initialized.
    */
   public function create(array $values = array()) {
-    // Add values that are specific to our Model
+    // Add values that are specific to our <%= className %>
     $values += array(
       '<%= moduleName %>_id' => '',
       'is_new' => TRUE,
@@ -457,9 +457,9 @@ class ModelController extends EntityAPIController {
 
 
 /**
- * The Controller for Model entities
+ * The Controller for <%= className %> entities
  */
-class ModelTypeController extends EntityAPIControllerExportable {
+class <%= className %>TypeController extends EntityAPIControllerExportable {
   public function __construct($entityType) {
     parent::__construct($entityType);
   }
@@ -476,7 +476,7 @@ class ModelTypeController extends EntityAPIControllerExportable {
    *   A <%= moduleName %> type object with all default fields initialized.
    */
   public function create(array $values = array()) {
-    // Add values that are specific to our Model
+    // Add values that are specific to our <%= className %>
     $values += array(
       'id' => '',
       'is_new' => TRUE,

@@ -2,13 +2,13 @@
 
 /**
  * @file
- * Model type editing UI.
+ * <%= className %> type editing UI.
  */
 
 /**
  * UI controller.
  */
-class ModelTypeUIController extends EntityDefaultUIController {
+class <%= className %>TypeUIController extends EntityDefaultUIController {
 
   /**
    * Overrides hook_menu() defaults.
