@@ -1,0 +1,14 @@
+name = <%= moduleName %>
+description = <%= moduleDesc %>
+package = <%= modulePackage %>
+core = 7.x
+
+<%= dependencies %>
+
+files[] = <%= moduleName %>.admin.inc
+files[] = <%= moduleName %>_type.admin.inc
+files[] = views/<%= moduleName %>.views.inc
+files[] = views/<%= moduleName %>_handler_link_field.inc
+files[] = views/<%= moduleName %>_handler_delete_link_field.inc
+files[] = views/<%= moduleName %>_handler_edit_link_field.inc
+files[] = views/<%= moduleName %>_handler_<%= moduleName %>_operations_field.inc

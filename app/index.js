@@ -5,50 +5,80 @@ var yeoman = require('yeoman-generator');
 var yosay = require('yosay');
 var chalk = require('chalk');
 
+var DrupalEntityGenerator = module.exports = function DrupalEntityGenerator(args, options, config) {
+  yeoman.generators.Base.apply(this, arguments);
+  this.moduleName = path.basename(process.cwd());
 
-var EntityGenerator = yeoman.generators.Base.extend({
-  init: function () {
-    this.pkg = require('../package.json');
+  this.on('end', function () {
+    this.installDependencies({ skipInstall: options['skip-install'] });
+  });
 
-    this.on('end', function () {
-      if (!this.options['skip-install']) {
-        this.installDependencies();
-      }
-    });
-  },
-
-  askFor: function () {
-    var done = this.async();
-
-    // Have Yeoman greet the user.
-    this.log(yosay('Welcome to the marvelous Entity generator!'));
-
-    var prompts = [{
-      type: 'confirm',
-      name: 'someOption',
-      message: 'Would you like to enable this option?',
-      default: true
-    }];
-
-    this.prompt(prompts, function (props) {
-      this.someOption = props.someOption;
-
-      done();
-    }.bind(this));
-  },
-
-  app: function () {
-    this.mkdir('app');
-    this.mkdir('app/templates');
-
-    this.copy('_package.json', 'package.json');
-    this.copy('_bower.json', 'bower.json');
-  },
-
-  projectfiles: function () {
-    this.copy('editorconfig', '.editorconfig');
-    this.copy('jshintrc', '.jshintrc');
+  this.capitalize = function(string) {
+	return string.charAt(0).toUpperCase() + string.slice(1);
   }
-});
+};
 
-module.exports = EntityGenerator;
+util.inherits(DrupalEntityGenerator, yeoman.generators.Base);
+
+DrupalEntityGenerator.prototype.askFor = function askFor() {
+  var cb = this.async();
+
+
+  // TODO: add support for list of properties to be added to entity
+  var prompts = [{
+    name: 'moduleDesc',
+    message: 'Describe your module:'
+  },{
+    name: 'modulePackage',
+    message: 'Provide a module package:',
+    default: 'Custom'
+  },{
+    name: 'moduleDepend',
+    message: 'What are your module\'s dependenies? (space seperated)'
+  },{
+    name: 'label',
+    message: 'What is your entity label?',
+    default: this.capitalize(this.moduleName)
+  },{
+    name: 'revisions',
+    message: 'Does your entity support revisions?',
+    default: 'Y/n'
+  },{
+    name: 'views',
+    message: 'Do you want to add views support for your entity?',
+    default: 'Y/n'
+  },{
+    name: 'bundles',
+    message: 'Will your entity be having bundles?',
+    default: 'Y/n'
+  },{
+    name: 'fieldable',
+    message: 'Is your entity fieldable?',
+    default: 'Y/n'
+  }];
+
+  this.prompt(prompts, function (err, props) {
+    if (err) {
+      return this.emit('error', err);
+    }
+
+    this.moduleDesc = props.moduleDesc;
+    this.modulePackage = props.modulePackage;
+    this.dependencies = props.moduleDepend.length !== 0 ? 'dependencies[] = ' + props.moduleDepend.split(' ').join('\r\ndependencies[] = ') : '';
+    this.revisions = props.revisions;
+    this.entityLabel = props.label;
+    this.views = props.views;
+    this.bundles = props.bundles;
+    this.fieldable = props.fieldable;
+
+    cb();
+  }.bind(this));
+};
+
+DrupalEntityGenerator.prototype.app = function app() {
+  var mn = this.moduleName;
+
+  this.template('_template.info', mn + '.info');
+  this.template('_template.install', mn + '.install');
+  this.template('_template.module', mn + '.module');
+};

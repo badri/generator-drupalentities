@@ -1,0 +1,489 @@
+<?php
+
+/**
+ * @file
+ * Module for the Model Entity - a starting point to create your own Entity
+ * and associated administration interface
+ */
+
+
+/**
+ * Implement hook_entity_info().
+ *
+ * We define two entities here - the actual entity that will hold our domain
+ * specific information and an entity that holds information about the different
+ * types of entities. See here: http://drupal.org/node/977380 for a discussion on this
+ * choice.
+ */
+function <%= moduleName %>_entity_info() {
+  $return['<%= moduleName %>'] = array(
+    'label' => t('Model'),
+    // The entity class and controller class extend the classes provided by the
+    // Entity API
+    'entity class' => 'Model',
+    'controller class' => 'ModelController',
+    'base table' => '<%= moduleName %>',
+    'fieldable' => TRUE,
+    'entity keys' => array(
+        'id' => '<%= moduleName %>_id',
+        'bundle' => 'type',
+    ),
+    // Bundles are defined by the <%= moduleName %> types below
+    'bundles' => array(),
+    // Bundle keys tell the FieldAPI how to extract information from the bundle objects
+    'bundle keys' => array(
+      'bundle' => 'type',
+    ),
+    'label callback' => 'entity_class_label',
+    'uri callback' => 'entity_class_uri',
+    'creation callback' => '<%= moduleName %>_create',
+    'access callback' => '<%= moduleName %>_access',
+    'module' => '<%= moduleName %>',
+    // The information below is used by the ModelUIController (which extends the EntityDefaultUIController)
+    'admin ui' => array(
+      'path' => 'admin/content/<%= moduleName %>s',
+      'file' => '<%= moduleName %>.admin.inc',
+      'controller class' => 'ModelUIController',
+      'menu wildcard' => '%<%= moduleName %>',
+    ),
+  );
+  // The entity that holds information about the entity types
+  $return['<%= moduleName %>_type'] = array(
+    'label' => t('Model Type'),
+    'entity class' => 'ModelType',
+    'controller class' => 'ModelTypeController',
+    'base table' => '<%= moduleName %>_type',
+    'fieldable' => FALSE,
+    'bundle of' => '<%= moduleName %>',
+    'exportable' => TRUE,
+    'entity keys' => array(
+      'id' => 'id',
+      'name' => 'type',
+      'label' => 'label',
+    ),
+    'access callback' => '<%= moduleName %>_type_access',
+    'module' => '<%= moduleName %>',
+    // Enable the entity API's admin UI.
+    'admin ui' => array(
+      'path' => 'admin/structure/<%= moduleName %>_types',
+      'file' => '<%= moduleName %>_type.admin.inc',
+      'controller class' => 'ModelTypeUIController',
+    ),
+  );
+
+  return $return;
+}
+
+
+/**
+ * Implements hook_entity_info_alter().
+ *
+ * We are adding the info about the <%= moduleName %> types via a hook to avoid a recursion
+ * issue as loading the <%= moduleName %> types requires the entity info as well.
+ *
+ * @todo This needs to be improved
+ */
+function <%= moduleName %>_entity_info_alter(&$entity_info) {
+  foreach (<%= moduleName %>_get_types() as $type => $info) {
+    $entity_info['<%= moduleName %>']['bundles'][$type] = array(
+      'label' => $info->label,
+      'admin' => array(
+        'path' => 'admin/structure/<%= moduleName %>_types/manage/%<%= moduleName %>_type',
+        'real path' => 'admin/structure/<%= moduleName %>_types/manage/' . $type,
+        'bundle argument' => 4,
+        'access arguments' => array('administer <%= moduleName %> types'),
+      ),
+    );
+  }
+}
+
+
+/**
+ * Implements hook_permission().
+ */
+function <%= moduleName %>_permission() {
+  // We set up permisssions to manage entity types, manage all entities and the
+  // permissions for each individual entity
+  $permissions = array(
+    'administer <%= moduleName %> types' => array(
+      'title' => t('Administer <%= moduleName %> types'),
+      'description' => t('Create and delete fields for <%= moduleName %> types, and set their permissions.'),
+    ),
+    'administer <%= moduleName %>s' => array(
+      'title' => t('Administer <%= moduleName %>s'),
+      'description' => t('Edit and delete all <%= moduleName %>s'),
+    ),
+  );
+
+  //Generate permissions per <%= moduleName %>
+  foreach (<%= moduleName %>_get_types() as $type) {
+    $type_name = check_plain($type->type);
+    $permissions += array(
+      "edit any $type_name <%= moduleName %>" => array(
+        'title' => t('%type_name: Edit any <%= moduleName %>', array('%type_name' => $type->label)),
+      ),
+      "view any $type_name <%= moduleName %>" => array(
+        'title' => t('%type_name: View any <%= moduleName %>', array('%type_name' => $type->label)),
+      ),
+    );
+  }
+  return $permissions;
+}
+
+
+/**
+ * Determines whether the given user has access to a <%= moduleName %>.
+ *
+ * @param $op
+ *   The operation being performed. One of 'view', 'update', 'create', 'delete'
+ *   or just 'edit' (being the same as 'create' or 'update').
+ * @param $<%= moduleName %>
+ *   Optionally a <%= moduleName %> or a <%= moduleName %> type to check access for. If nothing is
+ *   given, access for all <%= moduleName %>s is determined.
+ * @param $account
+ *   The user to check for. Leave it to NULL to check for the global user.
+ * @return boolean
+ *   Whether access is allowed or not.
+ */
+function <%= moduleName %>_access($op, $<%= moduleName %> = NULL, $account = NULL) {
+  if (user_access('administer <%= moduleName %>s', $account)) {
+    return TRUE;
+  }
+  if (isset($<%= moduleName %>) && $type_name = $<%= moduleName %>->type) {
+    $op = ($op == 'view') ? 'view' : 'edit';
+    if (user_access("$op any $type_name <%= moduleName %>", $account)) {
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
+
+
+/**
+ * Access callback for the entity API.
+ */
+function <%= moduleName %>_type_access($op, $type = NULL, $account = NULL) {
+  return user_access('administer <%= moduleName %> types', $account);
+}
+
+
+/**
+ * Gets an array of all <%= moduleName %> types, keyed by the type name.
+ *
+ * @param $type_name
+ *   If set, the type with the given name is returned.
+ * @return ModelType[]
+ *   Depending whether $type isset, an array of <%= moduleName %> types or a single one.
+ */
+function <%= moduleName %>_get_types($type_name = NULL) {
+  // entity_load will get the Entity controller for our <%= moduleName %> entity and call the load
+  // function of that object - we are loading entities by name here.
+  $types = entity_load_multiple_by_name('<%= moduleName %>_type', isset($type_name) ? array($type_name) : FALSE);
+  return isset($type_name) ? reset($types) : $types;
+}
+
+
+/**
+ * Menu argument loader; Load a <%= moduleName %> type by string.
+ *
+ * @param $type
+ *   The machine-readable name of a <%= moduleName %> type to load.
+ * @return
+ *   A <%= moduleName %> type array or FALSE if $type does not exist.
+ */
+function <%= moduleName %>_type_load($type) {
+  return <%= moduleName %>_get_types($type);
+}
+
+
+/**
+ * Fetch a <%= moduleName %> object. Make sure that the wildcard you choose
+ * in the <%= moduleName %> entity definition fits the function name here.
+ *
+ * @param $<%= moduleName %>_id
+ *   Integer specifying the <%= moduleName %> id.
+ * @param $reset
+ *   A boolean indicating that the internal cache should be reset.
+ * @return
+ *   A fully-loaded $<%= moduleName %> object or FALSE if it cannot be loaded.
+ *
+ * @see <%= moduleName %>_load_multiple()
+ */
+function <%= moduleName %>_load($<%= moduleName %>_id, $reset = FALSE) {
+  $<%= moduleName %>s = <%= moduleName %>_load_multiple(array($<%= moduleName %>_id), array(), $reset);
+  return reset($<%= moduleName %>s);
+}
+
+
+/**
+ * Load multiple <%= moduleName %>s based on certain conditions.
+ *
+ * @param $<%= moduleName %>_ids
+ *   An array of <%= moduleName %> IDs.
+ * @param $conditions
+ *   An array of conditions to match against the {<%= moduleName %>} table.
+ * @param $reset
+ *   A boolean indicating that the internal cache should be reset.
+ * @return
+ *   An array of <%= moduleName %> objects, indexed by <%= moduleName %>_id.
+ *
+ * @see entity_load()
+ * @see <%= moduleName %>_load()
+ */
+function <%= moduleName %>_load_multiple($<%= moduleName %>_ids = array(), $conditions = array(), $reset = FALSE) {
+  return entity_load('<%= moduleName %>', $<%= moduleName %>_ids, $conditions, $reset);
+}
+
+
+/**
+ * Deletes a <%= moduleName %>.
+ */
+function <%= moduleName %>_delete(Model $<%= moduleName %>) {
+  $<%= moduleName %>->delete();
+}
+
+
+/**
+ * Delete multiple <%= moduleName %>s.
+ *
+ * @param $<%= moduleName %>_ids
+ *   An array of <%= moduleName %> IDs.
+ */
+function <%= moduleName %>_delete_multiple(array $<%= moduleName %>_ids) {
+  entity_get_controller('<%= moduleName %>')->delete($<%= moduleName %>_ids);
+}
+
+
+/**
+ * Create a <%= moduleName %> object.
+ */
+function <%= moduleName %>_create($values = array()) {
+  return entity_get_controller('<%= moduleName %>')->create($values);
+}
+
+
+/**
+ * Saves a <%= moduleName %> to the database.
+ *
+ * @param $<%= moduleName %>
+ *   The <%= moduleName %> object.
+ */
+function <%= moduleName %>_save(Model $<%= moduleName %>) {
+  return $<%= moduleName %>->save();
+}
+
+
+/**
+ * Saves a <%= moduleName %> type to the db.
+ */
+function <%= moduleName %>_type_save(ModelType $type) {
+  $type->save();
+}
+
+
+/**
+ * Deletes a <%= moduleName %> type from the db.
+ */
+function <%= moduleName %>_type_delete(ModelType $type) {
+  $type->delete();
+}
+
+
+/**
+ * URI callback for <%= moduleName %>s
+ */
+function <%= moduleName %>_uri(Model $<%= moduleName %>){
+  return array(
+    'path' => '<%= moduleName %>/' . $<%= moduleName %>-><%= moduleName %>_id,
+  );
+}
+
+
+/**
+ * Menu title callback for showing individual entities
+ */
+function <%= moduleName %>_page_title(Model $<%= moduleName %>){
+  return $<%= moduleName %>->name;
+}
+
+
+/**
+ * Sets up content to show an individual <%= moduleName %>
+ * @todo - get rid of drupal_set_title();
+ */
+function <%= moduleName %>_page_view($<%= moduleName %>, $view_mode = 'full') {
+  $controller = entity_get_controller('<%= moduleName %>');
+  $content = $controller->view(array($<%= moduleName %>-><%= moduleName %>_id => $<%= moduleName %>));
+  drupal_set_title($<%= moduleName %>->name);
+  return $content;
+}
+
+
+/**
+ * Implements hook_views_api().
+ */
+function <%= moduleName %>_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', '<%= moduleName %>') . '/views',
+  );
+}
+
+
+/**
+ * Implement hook_theme().
+ */
+function <%= moduleName %>_theme() {
+  return array(
+    '<%= moduleName %>_add_list' => array(
+      'variables' => array('content' => array()),
+      'file' => '<%= moduleName %>.admin.inc',
+    ),
+    '<%= moduleName %>' => array(
+      'render element' => 'elements',
+      'template' => '<%= moduleName %>',
+    ),
+   '<%= moduleName %>_sample_data' => array(
+      'variables' => array('<%= moduleName %>_sample_data', '<%= moduleName %>' => NULL),
+      'template' => '<%= moduleName %>-sample-data',
+    ),
+
+
+  );
+}
+
+
+/**
+ * Implements hook_menu_local_tasks_alter().
+ */
+function <%= moduleName %>_menu_local_tasks_alter(&$data, $router_item, $root_path) {
+  // Add action link 'admin/structure/<%= moduleName %>s/add' on 'admin/structure/<%= moduleName %>s'.
+  if ($root_path == 'admin/content/<%= moduleName %>s') {
+    $item = menu_get_item('admin/content/<%= moduleName %>s/add');
+    if ($item['access']) {
+      $data['actions']['output'][] = array(
+        '#theme' => 'menu_local_action',
+        '#link' => $item,
+      );
+    }
+  }
+}
+
+
+/**
+ * The class used for <%= moduleName %> entities
+ */
+class Model extends Entity {
+
+  public function __construct($values = array()) {
+    parent::__construct($values, '<%= moduleName %>');
+  }
+
+  protected function defaultLabel() {
+    return $this->name;
+  }
+
+  protected function defaultUri() {
+    return array('path' => '<%= moduleName %>/' . $this-><%= moduleName %>_id);
+  }
+
+
+}
+
+
+/**
+ * The class used for <%= moduleName %> type entities
+ */
+class ModelType extends Entity {
+
+  public $type;
+  public $label;
+
+  public function __construct($values = array()) {
+    parent::__construct($values, '<%= moduleName %>_type');
+  }
+
+}
+
+
+/**
+ * The Controller for Model entities
+ */
+class ModelController extends EntityAPIController {
+  public function __construct($entityType) {
+    parent::__construct($entityType);
+  }
+
+
+  /**
+   * Create a <%= moduleName %> - we first set up the values that are specific
+   * to our <%= moduleName %> schema but then also go through the EntityAPIController
+   * function.
+   *
+   * @param $type
+   *   The machine-readable type of the <%= moduleName %>.
+   *
+   * @return
+   *   A <%= moduleName %> object with all default fields initialized.
+   */
+  public function create(array $values = array()) {
+    // Add values that are specific to our Model
+    $values += array(
+      '<%= moduleName %>_id' => '',
+      'is_new' => TRUE,
+      'title' => '',
+      'created' => '',
+      'changed' => '',
+      'data' => '',
+    );
+
+    $<%= moduleName %> = parent::create($values);
+    return $<%= moduleName %>;
+  }
+
+  /**
+   * Overriding the buldContent function to add entity specific fields
+   */
+  public function buildContent($entity, $view_mode = 'full', $langcode = NULL, $content = array()) {
+    $content = parent::buildContent($entity, $view_mode, $langcode, $content);
+    $content['<%= moduleName %>_sample_data'] =  array(
+      '#markup' => theme('<%= moduleName %>_sample_data', array('<%= moduleName %>_sample_data' => check_plain($entity->data['sample_data']), '<%= moduleName %>' => $entity)),
+    );
+
+    return $content;
+  }
+
+}
+
+
+/**
+ * The Controller for Model entities
+ */
+class ModelTypeController extends EntityAPIControllerExportable {
+  public function __construct($entityType) {
+    parent::__construct($entityType);
+  }
+
+   /**
+   * Create a <%= moduleName %> type - we first set up the values that are specific
+   * to our <%= moduleName %> type schema but then also go through the EntityAPIController
+   * function.
+   *
+   * @param $type
+   *   The machine-readable type of the <%= moduleName %>.
+   *
+   * @return
+   *   A <%= moduleName %> type object with all default fields initialized.
+   */
+  public function create(array $values = array()) {
+    // Add values that are specific to our Model
+    $values += array(
+      'id' => '',
+      'is_new' => TRUE,
+      'data' => '',
+    );
+    $<%= moduleName %>_type = parent::create($values);
+    return $<%= moduleName %>_type;
+  }
+
+}
