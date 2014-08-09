@@ -55,6 +55,10 @@ DrupalEntityGenerator.prototype.askFor = function askFor() {
     name: 'fieldable',
     message: 'Is your entity fieldable?',
     default: 'Y/n'
+  },{
+    name: 'license',
+    message: 'add GPL2 license?',
+    default: 'Y/n'
   }];
 
   this.prompt(prompts, function (err, props) {
@@ -70,6 +74,7 @@ DrupalEntityGenerator.prototype.askFor = function askFor() {
     this.views = props.views;
     this.bundles = props.bundles;
     this.fieldable = props.fieldable;
+    this.license = props.license;
 
     cb();
   }.bind(this));
@@ -81,4 +86,12 @@ DrupalEntityGenerator.prototype.app = function app() {
   this.template('_template.info', mn + '.info');
   this.template('_template.install', mn + '.install');
   this.template('_template.module', mn + '.module');
+
+  this.template('_template.tpl.php', mn + '.tpl.php');
+
+  this.template('_template.admin.inc', mn + '.admin.inc');
+  this.template('_template_type.admin.inc', mn + '_type.admin.inc');
+
+  this.copy('LICENSE', 'LICENSE');
+
 };

@@ -1,0 +1,31 @@
+<?php
+
+/**
+ * @file
+ * Contains a Views field handler to take care of displaying deletes links
+ * as fields
+ */
+
+
+class <%= moduleName %>_handler_delete_link_field extends <%= moduleName %>_handler_link_field {
+  function construct() {
+    parent::construct();
+    $this->additional_fields['type'] = 'type';
+  }
+
+
+  function render($values) {
+    $type = $values->{$this->aliases['type']};
+
+    //Creating a dummy <%= moduleName %> to check access against
+    $dummy_<%= moduleName %> = (object) array('type' => $type);
+    if (!<%= moduleName %>_access('edit', $dummy_<%= moduleName %>)) {
+      return;
+    }
+
+    $text = !empty($this->options['text']) ? $this->options['text'] : t('delete');
+    $<%= moduleName %>_id = $values->{$this->aliases['<%= moduleName %>_id']};
+
+    return l($text, 'admin/content/<%= moduleName %>s/<%= moduleName %>/' . $<%= moduleName %>_id . '/delete');
+  }
+}
