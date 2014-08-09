@@ -10,7 +10,7 @@ var DrupalEntityGenerator = module.exports = function DrupalEntityGenerator(args
   this.moduleName = path.basename(process.cwd());
 
   this.on('end', function () {
-    this.installDependencies({ skipInstall: options['skip-install'] });
+    this.installDependencies({ skipInstall: true });
   });
 
   this.capitalize = function(string) {
@@ -79,10 +79,6 @@ DrupalEntityGenerator.prototype.askFor = function askFor() {
   }];
 
   this.prompt(prompts, function (props) {
-    // if (err) {
-    //   return this.emit('error', err);
-    // }
-
     this.moduleDesc = props.moduleDesc;
     this.modulePackage = props.modulePackage;
     this.dependencies = props.moduleDepend.length !== 0 ? 'dependencies[] = ' + props.moduleDepend.split(' ').join('\r\ndependencies[] = ') : '';
@@ -123,5 +119,4 @@ DrupalEntityGenerator.prototype.app = function app() {
   if(this.license) {
     this.copy('LICENSE.txt', 'LICENSE.txt');
   }
-
 };

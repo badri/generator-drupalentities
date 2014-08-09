@@ -56,7 +56,7 @@ function <%= moduleName %>_views_default_views() {
   $view->base_table = '<%= moduleName %>';
   $view->human_name = '<%= className %>s';
   $view->core = 7;
-  $view->api_version = '3.0-alpha1';
+  $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
 
   /* Display: Master */
