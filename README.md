@@ -5,6 +5,7 @@ Yeoman generator for generating a Drupal 7 entity boilerplate code.
 ## Motivation
 
 I wanted to automate away the boring parts in creating a Drupal entity. Current options were:
+
 1. use [ECK](https://www.drupal.org/project/eck)
 2. Adopt [model](https://www.drupal.org/project/model) and customize it to your own needs.
 
