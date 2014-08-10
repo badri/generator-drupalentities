@@ -1,47 +1,28 @@
-# generator-entity [![Build Status](https://secure.travis-ci.org/badri/generator-entity.png?branch=master)](https://travis-ci.org/badri/generator-entity)
+# Generator-drupalentities
 
-> [Yeoman](http://yeoman.io) generator
+Yeoman generator for generating a Drupal 7 entity boilerplate code.
 
+## Motivation
 
-## Getting Started
+I wanted to automate away the boring parts in creating a Drupal entity. Current options were:
+1. use [ECK](https://www.drupal.org/project/eck)
+2. Adopt [model](https://www.drupal.org/project/model) and customize it to your own needs.
 
-### What is Yeoman?
+I prefer the latter approach. I like my entities in code, rather than have it as a feature. ECK [prefers it too](https://www.drupal.org/node/1971326#comment-7307660).
 
-Trick question. It's not a thing. It's this guy:
+## Getting started
+- Make sure you have [yo](https://github.com/yeoman/yo) installed:
+    `npm install -g yo`
+- Install the generator: `npm install -g generator-drupalentities`
+- mkdir your module folder at sites/*/modules and cd into it
+- Run: `yo drupalentities`
 
-![](http://i.imgur.com/JHaAlBJ.png)
-
-Basically, he wears a top hat, lives in your computer, and waits for you to tell him what kind of application you wish to create.
-
-Not every new computer comes with a Yeoman pre-installed. He lives in the [npm](https://npmjs.org) package repository. You only have to ask for him once, then he packs up and moves into your hard drive. *Make sure you clean up, he likes new and shiny things.*
-
-```bash
-$ npm install -g yo
-```
-
-### Yeoman Generators
-
-Yeoman travels light. He didn't pack any generators when he moved in. You can think of a generator like a plug-in. You get to choose what type of application you wish to create, such as a Backbone application or even a Chrome extension.
-
-To install generator-entity from npm, run:
-
-```bash
-$ npm install -g generator-entity
-```
-
-Finally, initiate the generator:
-
-```bash
-$ yo entity
-```
-
-### Getting To Know Yeoman
-
-Yeoman has a heart of gold. He's a person with feelings and opinions, but he's very easy to work with. If you think he's too opinionated, he can be easily convinced.
-
-If you'd like to get to know Yeoman better and meet some of his friends, [Grunt](http://gruntjs.com) and [Bower](http://bower.io), check out the complete [Getting Started Guide](https://github.com/yeoman/yeoman/wiki/Getting-Started).
-
+## Todo
+1. option to support revisions.
+2. switch bundles on or off for an entity.
+3. add more properties to an entity.
 
 ## License
+[MIT License](http://en.wikipedia.org/wiki/MIT_License)
 
-MIT
+Let me know if it works for you, love to hear feedback, bug reports etc. [Contact](https://twitter.com/lakshminp).
