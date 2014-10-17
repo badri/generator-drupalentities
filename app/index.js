@@ -31,6 +31,10 @@ DrupalEntityGenerator.prototype.askFor = function askFor() {
     // 4. controller name - ?
 
   var prompts = [{
+    name: 'moduleNamePrompt',
+    message: 'What is the name of your module:',
+    default: this.moduleName
+  },{
     name: 'moduleDesc',
     message: 'Describe your module:'
   },{
@@ -57,31 +61,37 @@ DrupalEntityGenerator.prototype.askFor = function askFor() {
     message: 'entity base url?',
     default: this.moduleName
   },{
+    type: 'confirm',
     name: 'revisions',
     message: 'Does your entity support revisions?',
-    default: 'Y/n'
+    default: false
   },{
+    type: 'confirm',
     name: 'views',
     message: 'Do you want to add views support for your entity?',
-    default: 'Y/n'
+    default: false
   },{
+    type: 'confirm',
     name: 'bundles',
     message: 'Will your entity be having bundles?',
-    default: 'Y/n'
+    default: true
   },{
+    type: 'confirm',
     name: 'fieldable',
     message: 'Is your entity fieldable?',
-    default: 'Y/n'
+    default: true
   },{
+    type: 'confirm',
     name: 'license',
     message: 'add GPL2 license?',
-    default: 'Y/n'
+    default: false
   }];
 
   this.prompt(prompts, function (props) {
+    this.moduleName = props.moduleNamePrompt;
     this.moduleDesc = props.moduleDesc;
     this.modulePackage = props.modulePackage;
-    this.dependencies = props.moduleDepend.length !== 0 ? 'dependencies[] = ' + props.moduleDepend.split(' ').join('\r\ndependencies[] = ') : '';
+    this.dependencies = props.moduleDepend.length !== 0 ? 'dependencies[] = ' + props.moduleDepend.split(' ').join('\ndependencies[] = ') : '';
     this.entityLabel = props.label;
     this.className = props.className;
     this.pluralizedName = props.pluralizedName;
@@ -109,13 +119,13 @@ DrupalEntityGenerator.prototype.app = function app() {
   this.template('_template.admin.inc', mn + '.admin.inc');
   this.template('_template_type.admin.inc', mn + '_type.admin.inc');
 
-  this.template('views/_template.views.inc', 'views/' + mn + '.views.inc');
-  this.template('views/_template_handler_template_operations_field.inc', 'views/' + mn + '_handler_' + mn + '_operations_field.inc');
-
-  this.template('views/_template_handler_link_field.inc', 'views/' + mn + '_handler_link_field.inc');
-  this.template('views/_template_handler_edit_link_field.inc', 'views/' + mn + '_handler_edit_link_field.inc');
-  this.template('views/_template_handler_delete_link_field.inc', 'views/' + mn + '_handler_delete_link_field.inc');
-
+  if(this.views) {
+    this.template('views/_template.views.inc', 'views/' + mn + '.views.inc');
+    this.template('views/_template_handler_template_operations_field.inc', 'views/' + mn + '_handler_' + mn + '_operations_field.inc');
+    this.template('views/_template_handler_link_field.inc', 'views/' + mn + '_handler_link_field.inc');
+    this.template('views/_template_handler_edit_link_field.inc', 'views/' + mn + '_handler_edit_link_field.inc');
+    this.template('views/_template_handler_delete_link_field.inc', 'views/' + mn + '_handler_delete_link_field.inc');
+  }
   if(this.license) {
     this.copy('LICENSE.txt', 'LICENSE.txt');
   }

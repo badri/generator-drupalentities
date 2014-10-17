@@ -319,6 +319,7 @@ function <%= moduleName %>_page_view($<%= moduleName %>, $view_mode = 'full') {
 }
 
 
+<% if (views) { %>
 /**
  * Implements hook_views_api().
  */
@@ -328,6 +329,7 @@ function <%= moduleName %>_views_api() {
     'path' => drupal_get_path('module', '<%= moduleName %>') . '/views',
   );
 }
+<% } %>
 
 
 /**
