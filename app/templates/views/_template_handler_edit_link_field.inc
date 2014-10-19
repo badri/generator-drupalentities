@@ -24,8 +24,8 @@ class <%= moduleName %>_handler_edit_link_field extends <%= moduleName %>_handle
     }
 
     $text = !empty($this->options['text']) ? $this->options['text'] : t('edit');
-    $<%= moduleName %>_id = $values->{$this->aliases['<%= moduleName %>_id']};
+    $<%= entityId %> = $values->{$this->aliases['<%= entityId %>']};
 
-    return l($text, 'admin/content/<%= moduleName %>s/<%= moduleName %>/' . $<%= moduleName %>_id . '/edit');
+    return l($text, 'admin/content/<%= moduleName %>s/<%= moduleName %>/' . $<%= entityId %> . '/edit');
   }
 }

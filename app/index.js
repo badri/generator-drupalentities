@@ -57,6 +57,10 @@ DrupalEntityGenerator.prototype.askFor = function askFor() {
     message: 'entity plurlized name?',
     default: this.moduleName + 's'
   },{
+    name: 'entityId',
+    message: 'entity id name?',
+    default: this.moduleName + '_id'
+  },{
     name: 'url',
     message: 'entity base url?',
     default: this.moduleName
@@ -95,6 +99,7 @@ DrupalEntityGenerator.prototype.askFor = function askFor() {
     this.entityLabel = props.label;
     this.className = props.className;
     this.pluralizedName = props.pluralizedName;
+    this.entityId = props.entityId;
     this.url = props.url;
     this.revisions = props.revisions;
     this.views = props.views;

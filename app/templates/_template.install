@@ -16,7 +16,7 @@ function <%= moduleName %>_schema() {
   $schema['<%= moduleName %>'] = array(
     'description' => 'The base table for <%= moduleName %> entities.',
     'fields' => array(
-      '<%= moduleName %>_id' => array(
+      '<%= entityId %>' => array(
         'description' => 'Primary Key: Identifier for a <%= moduleName %>.',
         'type' => 'serial',
         'unsigned' => TRUE,
@@ -63,7 +63,7 @@ function <%= moduleName %>_schema() {
         'description' => 'A serialized array of additional data.',
       ),
     ),
-    'primary key' => array('<%= moduleName %>_id'),
+    'primary key' => array('<%= entityId %>'),
     'indexes' => array(
       'type' => array('type'),
     ),

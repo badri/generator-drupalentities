@@ -24,8 +24,8 @@ class <%= moduleName %>_handler_delete_link_field extends <%= moduleName %>_hand
     }
 
     $text = !empty($this->options['text']) ? $this->options['text'] : t('delete');
-    $<%= moduleName %>_id = $values->{$this->aliases['<%= moduleName %>_id']};
+    $<%= entityId %> = $values->{$this->aliases['<%= entityId %>']};
 
-    return l($text, 'admin/content/<%= moduleName %>s/<%= moduleName %>/' . $<%= moduleName %>_id . '/delete');
+    return l($text, 'admin/content/<%= moduleName %>s/<%= moduleName %>/' . $<%= entityId %> . '/delete');
   }
 }

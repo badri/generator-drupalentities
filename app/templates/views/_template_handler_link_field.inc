@@ -10,7 +10,7 @@ class <%= moduleName %>_handler_link_field extends views_handler_field {
   function construct() {
     parent::construct();
 
-    $this->additional_fields['<%= moduleName %>_id'] = '<%= moduleName %>_id';
+    $this->additional_fields['<%= entityId %>'] = '<%= entityId %>';
     $this->additional_fields['type'] = 'type';
   }
 
@@ -39,8 +39,8 @@ class <%= moduleName %>_handler_link_field extends views_handler_field {
 
   function render($values) {
     $text = !empty($this->options['text']) ? $this->options['text'] : t('view');
-    $<%= moduleName %>_id = $values->{$this->aliases['<%= moduleName %>_id']};
+    $<%= entityId %> = $values->{$this->aliases['<%= entityId %>']};
 
-    return l($text, '<%= moduleName %>/' . $<%= moduleName %>_id);
+    return l($text, '<%= moduleName %>/' . $<%= entityId %>);
   }
 }

@@ -32,7 +32,7 @@ function <%= moduleName %>_views_data_alter(&$data) {
     ),
   );
   // This content of this field are decided based on the menu structure that
-  // follows <%= moduleName %>s/<%= moduleName %>/%<%= moduleName %>_id/op
+  // follows <%= moduleName %>s/<%= moduleName %>/%<%= entityId %>/op
   $data['<%= moduleName %>']['operations'] = array(
     'field' => array(
       'title' => t('Operations links'),
@@ -72,7 +72,7 @@ function <%= moduleName %>_views_default_views() {
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
     'name' => 'name',
-    '<%= moduleName %>_id' => '<%= moduleName %>_id',
+    '<%= entityId %>' => '<%= entityId %>',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
@@ -82,7 +82,7 @@ function <%= moduleName %>_views_default_views() {
       'align' => '',
       'separator' => '',
     ),
-    '<%= moduleName %>_id' => array(
+    '<%= entityId %>' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -100,24 +100,24 @@ function <%= moduleName %>_views_default_views() {
   $handler->display->display_options['empty']['area']['empty'] = FALSE;
   $handler->display->display_options['empty']['area']['content'] = 'No <%= moduleName %>s have been created yet';
   /* Field: <%= className %>: <%= className %> ID */
-  $handler->display->display_options['fields']['<%= moduleName %>_id']['id'] = '<%= moduleName %>_id';
-  $handler->display->display_options['fields']['<%= moduleName %>_id']['table'] = '<%= moduleName %>';
-  $handler->display->display_options['fields']['<%= moduleName %>_id']['field'] = '<%= moduleName %>_id';
-  $handler->display->display_options['fields']['<%= moduleName %>_id']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['<%= moduleName %>_id']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['<%= moduleName %>_id']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['<%= moduleName %>_id']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['<%= moduleName %>_id']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['<%= moduleName %>_id']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['<%= moduleName %>_id']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['<%= moduleName %>_id']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['<%= moduleName %>_id']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['<%= moduleName %>_id']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['<%= moduleName %>_id']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['<%= moduleName %>_id']['element_label_colon'] = 1;
-  $handler->display->display_options['fields']['<%= moduleName %>_id']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['<%= moduleName %>_id']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['<%= moduleName %>_id']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['<%= entityId %>']['id'] = '<%= entityId %>';
+  $handler->display->display_options['fields']['<%= entityId %>']['table'] = '<%= moduleName %>';
+  $handler->display->display_options['fields']['<%= entityId %>']['field'] = '<%= entityId %>';
+  $handler->display->display_options['fields']['<%= entityId %>']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['<%= entityId %>']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['<%= entityId %>']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['<%= entityId %>']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['<%= entityId %>']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['<%= entityId %>']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['<%= entityId %>']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['<%= entityId %>']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['<%= entityId %>']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['<%= entityId %>']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['<%= entityId %>']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['<%= entityId %>']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['<%= entityId %>']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['<%= entityId %>']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['<%= entityId %>']['empty_zero'] = 0;
   /* Field: <%= className %>: Name */
   $handler->display->display_options['fields']['name']['id'] = 'name';
   $handler->display->display_options['fields']['name']['table'] = '<%= moduleName %>';

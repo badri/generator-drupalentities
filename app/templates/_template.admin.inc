@@ -262,7 +262,7 @@ function <%= moduleName %>_edit_form_submit(&$form, &$form_state) {
  * @todo Remove hard-coded path
  */
 function <%= moduleName %>_form_submit_delete(&$form, &$form_state) {
-  $form_state['redirect'] = 'admin/content/<%= moduleName %>s/<%= moduleName %>/' . $form_state['<%= moduleName %>']-><%= moduleName %>_id . '/delete';
+  $form_state['redirect'] = 'admin/content/<%= moduleName %>s/<%= moduleName %>/' . $form_state['<%= moduleName %>']-><%= entityId %> . '/delete';
 }
 
 

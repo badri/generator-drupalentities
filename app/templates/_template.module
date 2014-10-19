@@ -25,7 +25,7 @@ function <%= moduleName %>_entity_info() {
     'base table' => '<%= moduleName %>',
     'fieldable' => TRUE,
     'entity keys' => array(
-        'id' => '<%= moduleName %>_id',
+        'id' => '<%= entityId %>',
         'bundle' => 'type',
     ),
     // Bundles are defined by the <%= moduleName %> types below
@@ -200,7 +200,7 @@ function <%= moduleName %>_type_load($type) {
  * Fetch a <%= moduleName %> object. Make sure that the wildcard you choose
  * in the <%= moduleName %> entity definition fits the function name here.
  *
- * @param $<%= moduleName %>_id
+ * @param $<%= entityId %>
  *   Integer specifying the <%= moduleName %> id.
  * @param $reset
  *   A boolean indicating that the internal cache should be reset.
@@ -209,8 +209,8 @@ function <%= moduleName %>_type_load($type) {
  *
  * @see <%= moduleName %>_load_multiple()
  */
-function <%= moduleName %>_load($<%= moduleName %>_id, $reset = FALSE) {
-  $<%= moduleName %>s = <%= moduleName %>_load_multiple(array($<%= moduleName %>_id), array(), $reset);
+function <%= moduleName %>_load($<%= entityId %>, $reset = FALSE) {
+  $<%= moduleName %>s = <%= moduleName %>_load_multiple(array($<%= entityId %>), array(), $reset);
   return reset($<%= moduleName %>s);
 }
 
@@ -218,20 +218,20 @@ function <%= moduleName %>_load($<%= moduleName %>_id, $reset = FALSE) {
 /**
  * Load multiple <%= moduleName %>s based on certain conditions.
  *
- * @param $<%= moduleName %>_ids
+ * @param $<%= entityId %>s
  *   An array of <%= moduleName %> IDs.
  * @param $conditions
  *   An array of conditions to match against the {<%= moduleName %>} table.
  * @param $reset
  *   A boolean indicating that the internal cache should be reset.
  * @return
- *   An array of <%= moduleName %> objects, indexed by <%= moduleName %>_id.
+ *   An array of <%= moduleName %> objects, indexed by <%= entityId %>.
  *
  * @see entity_load()
  * @see <%= moduleName %>_load()
  */
-function <%= moduleName %>_load_multiple($<%= moduleName %>_ids = array(), $conditions = array(), $reset = FALSE) {
-  return entity_load('<%= moduleName %>', $<%= moduleName %>_ids, $conditions, $reset);
+function <%= moduleName %>_load_multiple($<%= entityId %>s = array(), $conditions = array(), $reset = FALSE) {
+  return entity_load('<%= moduleName %>', $<%= entityId %>s, $conditions, $reset);
 }
 
 
@@ -246,11 +246,11 @@ function <%= moduleName %>_delete(<%= className %> $<%= moduleName %>) {
 /**
  * Delete multiple <%= moduleName %>s.
  *
- * @param $<%= moduleName %>_ids
+ * @param $<%= entityId %>s
  *   An array of <%= moduleName %> IDs.
  */
-function <%= moduleName %>_delete_multiple(array $<%= moduleName %>_ids) {
-  entity_get_controller('<%= moduleName %>')->delete($<%= moduleName %>_ids);
+function <%= moduleName %>_delete_multiple(array $<%= entityId %>s) {
+  entity_get_controller('<%= moduleName %>')->delete($<%= entityId %>s);
 }
 
 
@@ -294,7 +294,7 @@ function <%= moduleName %>_type_delete(<%= className %>Type $type) {
  */
 function <%= moduleName %>_uri(<%= className %> $<%= moduleName %>){
   return array(
-    'path' => '<%= url %>/' . $<%= moduleName %>-><%= moduleName %>_id,
+    'path' => '<%= url %>/' . $<%= moduleName %>-><%= entityId %>,
   );
 }
 
@@ -313,7 +313,7 @@ function <%= moduleName %>_page_title(<%= className %> $<%= moduleName %>){
  */
 function <%= moduleName %>_page_view($<%= moduleName %>, $view_mode = 'full') {
   $controller = entity_get_controller('<%= moduleName %>');
-  $content = $controller->view(array($<%= moduleName %>-><%= moduleName %>_id => $<%= moduleName %>));
+  $content = $controller->view(array($<%= moduleName %>-><%= entityId %> => $<%= moduleName %>));
   drupal_set_title($<%= moduleName %>->name);
   return $content;
 }
@@ -386,7 +386,7 @@ class <%= className %> extends Entity {
   }
 
   protected function defaultUri() {
-    return array('path' => '<%= url %>/' . $this-><%= moduleName %>_id);
+    return array('path' => '<%= url %>/' . $this-><%= entityId %>);
   }
 
 
@@ -431,7 +431,7 @@ class <%= className %>Controller extends EntityAPIController {
   public function create(array $values = array()) {
     // Add values that are specific to our <%= className %>
     $values += array(
-      '<%= moduleName %>_id' => '',
+      '<%= entityId %>' => '',
       'is_new' => TRUE,
       'title' => '',
       'created' => '',

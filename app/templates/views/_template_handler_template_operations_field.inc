@@ -8,7 +8,7 @@ class <%= moduleName %>_handler_<%= moduleName %>_operations_field extends views
   function construct() {
     parent::construct();
 
-    $this->additional_fields['<%= moduleName %>_id'] = '<%= moduleName %>_id';
+    $this->additional_fields['<%= entityId %>'] = '<%= entityId %>';
   }
 
   function query() {
@@ -18,7 +18,7 @@ class <%= moduleName %>_handler_<%= moduleName %>_operations_field extends views
 
   function render($values) {
 
-    $links = menu_contextual_links('<%= moduleName %>', 'admin/content/<%= moduleName %>s/<%= moduleName %>', array($this->get_value($values, '<%= moduleName %>_id')));
+    $links = menu_contextual_links('<%= moduleName %>', 'admin/content/<%= moduleName %>s/<%= moduleName %>', array($this->get_value($values, '<%= entityId %>')));
 
     if (!empty($links)) {
       return theme('links', array('links' => $links, 'attributes' => array('class' => array('links', 'inline', 'operations'))));
