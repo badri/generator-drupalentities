@@ -92,7 +92,7 @@ DrupalEntityGenerator.prototype.askFor = function askFor() {
   }];
 
   this.prompt(prompts, function (props) {
-    this.moduleName = props.moduleNamePrompt;
+    this.moduleNamePrompt = props.moduleNamePrompt;
     this.moduleDesc = props.moduleDesc;
     this.modulePackage = props.modulePackage;
     this.dependencies = props.moduleDepend.length !== 0 ? 'dependencies[] = ' + props.moduleDepend.split(' ').join('\ndependencies[] = ') : '';

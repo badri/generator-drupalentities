@@ -15,7 +15,7 @@
  * types of entities. See here: http://drupal.org/node/977380 for a discussion on this
  * choice.
  */
-function <%= moduleName %>_entity_info() {
+function <%= moduleNamePrompt %>_entity_info() {
   $return['<%= moduleName %>'] = array(
     'label' => t('<%= entityLabel %>'),
     // The entity class and controller class extend the classes provided by the
@@ -83,7 +83,7 @@ function <%= moduleName %>_entity_info() {
  *
  * @todo This needs to be improved
  */
-function <%= moduleName %>_entity_info_alter(&$entity_info) {
+function <%= moduleNamePrompt %>_entity_info_alter(&$entity_info) {
   foreach (<%= moduleName %>_get_types() as $type => $info) {
     $entity_info['<%= moduleName %>']['bundles'][$type] = array(
       'label' => $info->label,
@@ -101,7 +101,7 @@ function <%= moduleName %>_entity_info_alter(&$entity_info) {
 /**
  * Implements hook_permission().
  */
-function <%= moduleName %>_permission() {
+function <%= moduleNamePrompt %>_permission() {
   // We set up permisssions to manage entity types, manage all entities and the
   // permissions for each individual entity
   $permissions = array(
@@ -323,7 +323,7 @@ function <%= moduleName %>_page_view($<%= moduleName %>, $view_mode = 'full') {
 /**
  * Implements hook_views_api().
  */
-function <%= moduleName %>_views_api() {
+function <%= moduleNamePrompt %>_views_api() {
   return array(
     'api' => 3,
     'path' => drupal_get_path('module', '<%= moduleName %>') . '/views',
@@ -335,7 +335,7 @@ function <%= moduleName %>_views_api() {
 /**
  * Implement hook_theme().
  */
-function <%= moduleName %>_theme() {
+function <%= moduleNamePrompt %>_theme() {
   return array(
     '<%= moduleName %>_add_list' => array(
       'variables' => array('content' => array()),
@@ -358,7 +358,7 @@ function <%= moduleName %>_theme() {
 /**
  * Implements hook_menu_local_tasks_alter().
  */
-function <%= moduleName %>_menu_local_tasks_alter(&$data, $router_item, $root_path) {
+function <%= moduleNamePrompt %>_menu_local_tasks_alter(&$data, $router_item, $root_path) {
   // Add action link 'admin/structure/<%= moduleName %>s/add' on 'admin/structure/<%= moduleName %>s'.
   if ($root_path == 'admin/content/<%= url %>s') {
     $item = menu_get_item('admin/content/<%= moduleName %>s/add');

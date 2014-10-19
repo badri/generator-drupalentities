@@ -185,7 +185,7 @@ function <%= moduleName %>_views_default_views() {
   $handler->display->display_options['menu']['weight'] = '-10';
   $handler->display->display_options['tab_options']['type'] = 'tab';
   $handler->display->display_options['tab_options']['title'] = '<%= className %>s';
-  $handler->display->display_options['tab_options']['description'] = 'Manage <%= moduleName %>s';
+  $handler->display->display_options['tab_options']['description'] = 'Manage <%= label %>s';
   $handler->display->display_options['tab_options']['weight'] = '0';
   $handler->display->display_options['tab_options']['name'] = 'management';
   $translatables['<%= moduleName %>s'] = array(

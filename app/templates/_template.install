@@ -10,10 +10,10 @@
 /**
  * Implements hook_schema().
  */
-function <%= moduleName %>_schema() {
+function <%= moduleNamePrompt %>_schema() {
   $schema = array();
 
-  $schema['<%= moduleName %>'] = array(
+  $schema['<%= moduleNamePrompt %>'] = array(
     'description' => 'The base table for <%= moduleName %> entities.',
     'fields' => array(
       '<%= entityId %>' => array(
@@ -23,7 +23,7 @@ function <%= moduleName %>_schema() {
         'not null' => TRUE,
       ),
       'type' => array(
-        'description' => 'The {<%= moduleName %>_type}.type of this <%= moduleName %>.',
+        'description' => 'The {<%= moduleNamePrompt %>_type}.type of this <%= moduleName %>.',
         'type' => 'varchar',
         'length' => 255,
         'not null' => TRUE,
@@ -69,7 +69,7 @@ function <%= moduleName %>_schema() {
     ),
   );
 
-  $schema['<%= moduleName %>_type'] = array(
+  $schema['<%= moduleNamePrompt %>_type'] = array(
     'description' => 'Stores information about defined <%= moduleName %> types.',
     'fields' => array(
       'id' => array(
