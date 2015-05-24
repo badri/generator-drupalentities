@@ -113,10 +113,11 @@ DrupalEntityGenerator.prototype.askFor = function askFor() {
 
 DrupalEntityGenerator.prototype.app = function app() {
   var mn = this.moduleName;
+  var mnp = this.moduleNamePrompt;
 
-  this.template('_template.info', mn + '.info');
-  this.template('_template.install', mn + '.install');
-  this.template('_template.module', mn + '.module');
+  this.template('_template.info', mnp + '.info');
+  this.template('_template.install', mnp + '.install');
+  this.template('_template.module', mnp + '.module');
 
   this.template('_template.tpl.php', mn + '.tpl.php');
   this.template('_template-sample-data.tpl.php', mn + '-sample-data.tpl.php');
@@ -125,7 +126,7 @@ DrupalEntityGenerator.prototype.app = function app() {
   this.template('_template_type.admin.inc', mn + '_type.admin.inc');
 
   if(this.views) {
-    this.template('views/_template.views.inc', 'views/' + mn + '.views.inc');
+    this.template('views/_template.views.inc', 'views/' + mnp + '.views.inc');
     this.template('views/_template_handler_template_operations_field.inc', 'views/' + mn + '_handler_' + mn + '_operations_field.inc');
     this.template('views/_template_handler_link_field.inc', 'views/' + mn + '_handler_link_field.inc');
     this.template('views/_template_handler_edit_link_field.inc', 'views/' + mn + '_handler_edit_link_field.inc');

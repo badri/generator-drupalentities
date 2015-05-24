@@ -22,7 +22,7 @@ function <%= moduleNamePrompt %>_entity_info() {
     // Entity API
     'entity class' => '<%= className %>',
     'controller class' => '<%= className %>Controller',
-    'base table' => '<%= moduleName %>',
+    'base table' => '<%= moduleNamePrompt %>',
     'fieldable' => TRUE,
     'entity keys' => array(
         'id' => '<%= entityId %>',
@@ -38,7 +38,7 @@ function <%= moduleNamePrompt %>_entity_info() {
     'uri callback' => 'entity_class_uri',
     'creation callback' => '<%= moduleName %>_create',
     'access callback' => '<%= moduleName %>_access',
-    'module' => '<%= moduleName %>',
+    'module' => '<%= moduleNamePrompt %>',
     // The information below is used by the <%= className %>UIController (which extends the EntityDefaultUIController)
     'admin ui' => array(
       'path' => 'admin/content/<%= url %>s',
@@ -52,7 +52,7 @@ function <%= moduleNamePrompt %>_entity_info() {
     'label' => t('<%= entityLabel %> Type'),
     'entity class' => '<%= className %>Type',
     'controller class' => '<%= className %>TypeController',
-    'base table' => '<%= moduleName %>_type',
+    'base table' => '<%= moduleNamePrompt %>_type',
     'fieldable' => FALSE,
     'bundle of' => '<%= moduleName %>',
     'exportable' => TRUE,
@@ -62,7 +62,7 @@ function <%= moduleNamePrompt %>_entity_info() {
       'label' => 'label',
     ),
     'access callback' => '<%= moduleName %>_type_access',
-    'module' => '<%= moduleName %>',
+    'module' => '<%= moduleNamePrompt %>',
     // Enable the entity API's admin UI.
     'admin ui' => array(
       'path' => 'admin/structure/<%= url %>_types',
@@ -326,7 +326,7 @@ function <%= moduleName %>_page_view($<%= moduleName %>, $view_mode = 'full') {
 function <%= moduleNamePrompt %>_views_api() {
   return array(
     'api' => 3,
-    'path' => drupal_get_path('module', '<%= moduleName %>') . '/views',
+    'path' => drupal_get_path('module', '<%= moduleNamePrompt %>') . '/views',
   );
 }
 <% } %>

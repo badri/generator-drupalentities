@@ -1,6 +1,6 @@
 {
   "name": "generator-drupalentities",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "Yeoman generator",
   "license": "MIT",
   "main": "app/index.js",

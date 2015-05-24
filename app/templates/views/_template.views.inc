@@ -9,7 +9,7 @@
 /**
  * Implements hook_views_data()
  */
-function <%= moduleName %>_views_data_alter(&$data) {
+function <%= moduleNamePrompt %>_views_data_alter(&$data) {
   $data['<%= moduleName %>']['link_<%= moduleName %>'] = array(
     'field' => array(
       'title' => t('Link'),
@@ -46,14 +46,14 @@ function <%= moduleName %>_views_data_alter(&$data) {
 /**
  * Implements hook_views_default_views().
  */
-function <%= moduleName %>_views_default_views() {
+function <%= moduleNamePrompt %>_views_default_views() {
   $views = array();
 
   $view = new view;
   $view->name = '<%= moduleName %>s';
   $view->description = 'A list of all <%= moduleName %>s';
   $view->tag = '<%= moduleName %>s';
-  $view->base_table = '<%= moduleName %>';
+  $view->base_table = '<%= moduleNamePrompt %>';
   $view->human_name = '<%= className %>s';
   $view->core = 7;
   $view->api_version = '3.0';
@@ -101,7 +101,7 @@ function <%= moduleName %>_views_default_views() {
   $handler->display->display_options['empty']['area']['content'] = 'No <%= moduleName %>s have been created yet';
   /* Field: <%= className %>: <%= className %> ID */
   $handler->display->display_options['fields']['<%= entityId %>']['id'] = '<%= entityId %>';
-  $handler->display->display_options['fields']['<%= entityId %>']['table'] = '<%= moduleName %>';
+  $handler->display->display_options['fields']['<%= entityId %>']['table'] = '<%= moduleNamePrompt %>';
   $handler->display->display_options['fields']['<%= entityId %>']['field'] = '<%= entityId %>';
   $handler->display->display_options['fields']['<%= entityId %>']['alter']['alter_text'] = 0;
   $handler->display->display_options['fields']['<%= entityId %>']['alter']['make_link'] = 0;
@@ -120,7 +120,7 @@ function <%= moduleName %>_views_default_views() {
   $handler->display->display_options['fields']['<%= entityId %>']['empty_zero'] = 0;
   /* Field: <%= className %>: Name */
   $handler->display->display_options['fields']['name']['id'] = 'name';
-  $handler->display->display_options['fields']['name']['table'] = '<%= moduleName %>';
+  $handler->display->display_options['fields']['name']['table'] = '<%= moduleNamePrompt %>';
   $handler->display->display_options['fields']['name']['field'] = 'name';
   $handler->display->display_options['fields']['name']['alter']['alter_text'] = 0;
   $handler->display->display_options['fields']['name']['alter']['make_link'] = 0;
@@ -139,7 +139,7 @@ function <%= moduleName %>_views_default_views() {
   $handler->display->display_options['fields']['name']['empty_zero'] = 0;
   /* Field: <%= className %>: Link */
   $handler->display->display_options['fields']['link_<%= moduleName %>']['id'] = 'link_<%= moduleName %>';
-  $handler->display->display_options['fields']['link_<%= moduleName %>']['table'] = '<%= moduleName %>';
+  $handler->display->display_options['fields']['link_<%= moduleName %>']['table'] = '<%= moduleNamePrompt %>';
   $handler->display->display_options['fields']['link_<%= moduleName %>']['field'] = 'link_<%= moduleName %>';
   $handler->display->display_options['fields']['link_<%= moduleName %>']['label'] = 'View';
   $handler->display->display_options['fields']['link_<%= moduleName %>']['alter']['alter_text'] = 0;
@@ -159,7 +159,7 @@ function <%= moduleName %>_views_default_views() {
   $handler->display->display_options['fields']['link_<%= moduleName %>']['empty_zero'] = 0;
   /* Field: <%= className %>: Operations links */
   $handler->display->display_options['fields']['operations']['id'] = 'operations';
-  $handler->display->display_options['fields']['operations']['table'] = '<%= moduleName %>';
+  $handler->display->display_options['fields']['operations']['table'] = '<%= moduleNamePrompt %>';
   $handler->display->display_options['fields']['operations']['field'] = 'operations';
   $handler->display->display_options['fields']['operations']['alter']['alter_text'] = 0;
   $handler->display->display_options['fields']['operations']['alter']['make_link'] = 0;
@@ -185,7 +185,7 @@ function <%= moduleName %>_views_default_views() {
   $handler->display->display_options['menu']['weight'] = '-10';
   $handler->display->display_options['tab_options']['type'] = 'tab';
   $handler->display->display_options['tab_options']['title'] = '<%= className %>s';
-  $handler->display->display_options['tab_options']['description'] = 'Manage <%= label %>s';
+  $handler->display->display_options['tab_options']['description'] = 'Manage <%= entityLabel %>s';
   $handler->display->display_options['tab_options']['weight'] = '0';
   $handler->display->display_options['tab_options']['name'] = 'management';
   $translatables['<%= moduleName %>s'] = array(
